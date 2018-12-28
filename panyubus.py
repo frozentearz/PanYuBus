@@ -17,22 +17,23 @@ def main():
     try:
         dict = json.loads(requests.get(url).content.decode('utf-8'))
         # dict=ast.literal_eval(requests.get(url).content.decode('utf-8'))
-        if dict.get("code") == 200 and dict.get("msg") == "ok":
-            bus = dict.get("data").get("bus")
-            Results["line"] = bus.get("rn")
-            Results["direction"] = getDirection(bus)
-            stations = bus.get("l")
-            for station in stations:
-                if station.get("n") == my_station:
-                    flag = stations.index(station)
-            bus_status = stations[flag-before_num].get("bus_comming")
-            if len(bus_status.get("bl")) == 0 and len(bus_status.get("bbl") == 0):
-                Results["msg"] = "还未达到，请耐心等候..."
-            else: 
-                Results["msg"] = "已到达" + stations[flag-before_num].get("n") + "，距您仅有 " + before_num + " 站，请做好上车准备！"
     except Exception as e:
         print("API数据获取失败！ Error: ")
         print(e)
+
+    if dict.get("code") == 200 and dict.get("msg") == "ok":
+        bus = dict.get("data").get("bus")
+        Results["line"] = bus.get("rn")
+        Results["direction"] = getDirection(bus)
+        stations = bus.get("l")
+        for station in stations:
+            if station.get("n") == my_station:
+                flag = stations.index(station)
+        bus_status = stations[flag-before_num].get("bus_comming")
+        if len(bus_status.get("bl")) == 0 and len(bus_status.get("bbl") == 0):
+            Results["msg"] = "还未达到，请耐心等候..."
+        else: 
+            Results["msg"] = "已到达" + stations[flag-before_num].get("n") + "，距您仅有 " + before_num + " 站，请做好上车准备！"
     return Results
 
 def getDirection(bus):
