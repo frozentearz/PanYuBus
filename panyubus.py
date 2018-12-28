@@ -30,11 +30,10 @@ def main():
                 pass
             else: 
                 Results["msg"] = "已到达" + stations[flag-before_num].get("n") + "，距您仅有 " + before_num + " 站，请做好上车准备！"
-        return Results
-  
     except Exception as e:
         print("API数据获取失败！ Error: ")
         print(e)
+    return Results
 
 def getDirection(bus):
     l = bus.get("l")
@@ -46,6 +45,7 @@ if __name__ == '__main__':
     itchat.auto_login(hotReload=True, enableCmdQR=True)
     while 1:
         Results = main()
+        print(Results)
         userMsg = "您好!\n您想搭乘" + Results.get("direction") + "的" + Results.get("line") + "公交车" + Results.get("msg")
         users=itchat.search_friends("Frazier")
         userName= users[0]['UserName']
