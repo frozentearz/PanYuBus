@@ -26,7 +26,7 @@ def main():
                 if station.get("n") == my_station:
                     flag = stations.index(station)
             bus_status = stations[flag-before_num].get("bus_comming")
-            if len(bus_status.get("bl")) == 0 && len(bus_status.get("bbl") == 0):
+            if len(bus_status.get("bl")) == 0 & len(bus_status.get("bbl") == 0):
                 pass
             else: 
                 Results["msg"] = "已到达" + stations[flag-before_num].get("n") + "，距您仅有 " + before_num + " 站，请做好上车准备！"
