@@ -43,5 +43,5 @@ echo " " >> panyubus.log
 date >> panyubus.log
 echo "----------------------------------------------------" >> panyubus.log
 
-# python3 panyubus.pyw
-python3 panyubus.py >> panyubus.log 2>&1
+python3 panyubus.py
+# python3 panyubus.py >> panyubus.log 2>&1
