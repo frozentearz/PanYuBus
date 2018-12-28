@@ -42,4 +42,4 @@ echo " " >> panyubus.log
 date >> panyubus.log
 echo "----------------------------------------------------" >> panyubus.log
 # python3 panyubus.py
-pytho3n panyubus.py >> panyubus.log 2>&1
+python3 panyubus.py >> panyubus.log 2>&1
