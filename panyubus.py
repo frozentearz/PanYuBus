@@ -17,7 +17,7 @@ def main():
     try:
         dict = json.loads(requests.get(url).content.decode('utf-8'))
         # dict=ast.literal_eval(requests.get(url).content.decode('utf-8'))
-        if dict.get("code") == 200 & dict.get("msg") == "OK":
+        if dict.get("code") == 200 & dict.get("msg") == "ok":
             bus = dict.get("data").get("bus")
             Results["line"] = bus.get("rn")
             Results["direction"] = getDirection(bus)
