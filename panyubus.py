@@ -48,7 +48,7 @@ if __name__ == '__main__':
         Results = main()
         print(Results)
         userMsg = "您好!\n您想搭乘" + Results.get("direction") + "的" + Results.get("line") + "公交车" + Results.get("msg")
-        users=itchat.search_friends("Frazier")
+        users=itchat.search_friends("林豪")
         userName= users[0]['UserName']
         itchat.send(userMsg, toUserName=userName)
         time.sleep(10)
