@@ -34,7 +34,8 @@ if [[ $result != $response ]]; then
         chkconfig --level 345 crond on
         service crond start
     fi
-    pip install requests >> panyubus.log 2>&1
+    pip3 install requests >> panyubus.log 2>&1
+    pip3 install itchat >> panyubus.log 2>&1
 fi
 
 # 打印日志
@@ -42,5 +43,5 @@ echo " " >> panyubus.log
 date >> panyubus.log
 echo "----------------------------------------------------" >> panyubus.log
 
-# python3 panyubus.py
+# python3 panyubus.pyw
 python3 panyubus.py >> panyubus.log 2>&1

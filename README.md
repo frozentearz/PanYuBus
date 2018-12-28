@@ -5,7 +5,7 @@
 2. 本机授权登录，itchat 发送通知给我，告诉我下一趟 番68 在哪，估计还有多久达到
 
 **PS:** 第一次安装请删除 *panyubus.log* 文件！！！  
-**PSS:** 请安装 Python ！
+**PSS:** 请尽量使用 Python3 ！
 
 crontab:
 #### 每个工作日早上 6:30 分启动程序  
@@ -16,3 +16,7 @@ crontab:
 #### 相关文档：  
 >[Crontab 简单实现树莓派语音闹钟](https://zhuanlan.zhihu.com/p/34195493)  
 http://h5.thecampus.cc/api/v1/search?name=1
+
+ps:
+12/28
+bus_comming.si = 783482
