@@ -36,6 +36,7 @@ if [[ $result != $response ]]; then
     fi
     pip3 install requests >> panyubus.log 2>&1
     pip3 install itchat >> panyubus.log 2>&1
+    pip3 install requests_toolbelt >> panyubus.log 2>&1
 fi
 
 # 打印日志
