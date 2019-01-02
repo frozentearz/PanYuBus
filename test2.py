@@ -35,13 +35,11 @@ def get_img():
     return {"img_url" : image.get("img_url"), "del_url": image.get("del_url")}
 
 
-def send_QR():
-
+def send_QR_to_email():
     image = get_img()
     print(image)
     html = "<h2>扫一扫登录微信</h2><img src='" + image.get("img_url") + "'>"
-
-    return requests.post(
+    requests.post(
         "https://api.mailgun.net/v3/mail.dgcontinent.com/messages",
         auth=("api", "fd5f270993f10b93397fb82231337e09-6b60e603-b16f5772"),
         data={"from": "Excited User <mailgun@mail.dgcontinent.com>",
