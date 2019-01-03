@@ -1,18 +1,21 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+import threading
 import requests
 import random
+import itchat
 import json
+import time
+import os
 from requests_toolbelt import MultipartEncoder
 
 def get_img():
     image = {}
     url = "https://sm.ms/api/upload"
     headers = {
-        'content-type': "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+        'content-type': "multipart/form-data;",
         'cache-control': "no-cache",
-        'Postman-Token': "cf9bd2b3-1206-44b3-b136-621444b66ba7"
     }
     multipart_encoder = MultipartEncoder(
         fields = {
@@ -36,7 +39,6 @@ def get_img():
 
 
 def send_QR():
-
     image = get_img()
     print(image)
     html = "<h2>扫一扫登录微信</h2><img src='" + image.get("img_url") + "'>"
@@ -49,8 +51,23 @@ def send_QR():
               "subject": "Wechat 微信登录授权申请",
               "html": html})
 
+def wechat_login():
+    itchat.auto_login()
+
 def main():
-    send_simple_message()
+    t1 = threading.Thread(target=wechat_login)
+    t2 = threading.Thread(target=send_QR)
+
+    t1.start()
+    while True:
+        if os.path.exists("./QR.png"):
+            t2.start()
+        time.sleep(0.5)
+        break;
+
+    print("finished")
 
 if __name__ == '__main__':
-    main()
+    # main()
+    print(send_QR())
+    # print(get_img()) 
