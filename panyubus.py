@@ -1,24 +1,19 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+import ConfigParser
 import requests
 import itchat
 import json
 import time
 import ast
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
 
 def get_img():
     image = {}
     url = "https://sm.ms/api/upload"
     headers = {
-        'content-type': "multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+        'content-type': "multipart/form-data;",
         'cache-control': "no-cache",
-        'Postman-Token': "cf9bd2b3-1206-44b3-b136-621444b66ba7"
     }
     multipart_encoder = MultipartEncoder(
         fields = {
@@ -57,7 +52,7 @@ def main():
         dict = json.loads(requests.get(url).content.decode('utf-8'))
         # dict=ast.literal_eval(requests.get(url).content.decode('utf-8'))
     except Exception as e:
-        print("API数据获取失败！ Error: ")
+        print("实时公交数据获取失败！ Error: ")
         print(e)
 
     if dict.get("code") == 200 and dict.get("msg") == "ok":
@@ -75,35 +70,32 @@ def main():
             Results["msg"] = "已到达" + stations[flag-before_num].get("n") + "，距您仅有 " + before_num + " 站，请做好上车准备！"
     return Results
 
-def email_sender():
-    return requests.post(
+def send_QR_to_email():
+    cf = ConfigParser.ConfigParser()
+    if os.path.exists("./config/myconfig.conf"):
+        cf.read("./config/myconfig.conf")
+    else:
+        cf.read("./config/config.conf")
+    opts = cf.options("mailgun")
+    api = cf.get("mailgun", "api")
+    print("api已取出：" + api)
+
+    image = get_img()
+    print(image)
+    html = "<h2>扫一扫登录微信</h2><img src='" + image.get("img_url") + "'>"
+    requests.post(
         "https://api.mailgun.net/v3/mail.dgcontinent.com/messages",
-        auth=("api", "fd5f270993f10b93397fb82231337e09-6b60e603-b16f5772"),
+        auth=("api", api),
         data={"from": "Excited User <mailgun@mail.dgcontinent.com>",
               "to": ["frozen_tearz@163.com"],
               "subject": "Wechat 微信登录授权申请",
-              "html": "<img src=''>"})
-
-
-    sender = 'frozen_tearz@163.com'
-    receivers = ['frazier.xiao@tyj365.com']  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
-
-    subject = "Wechat 微信登录授权申请"  # 主题
-    msg = MIMEMultipart('related')
-    content = MIMEText('<html><body>微信二维码登录：<br><img src="cid:imageid" alt="imageid"></body></html>', 'html', 'utf-8')  # 正文
-    # msg = MIMEText(content)
-    msg.attach(content)
-    msg['Subject'] = subject
-    msg['From'] = sender
-    msg['To'] = receivers
- 
-    file = open("QR.png", "rb")
-    img_data = file.read()
-    file.close()
+              "html": html
+        }
+    )
 
 
 if __name__ == '__main__':
-    itchat.auto_login(hotReload=True, enableCmdQR=0.5)
+    itchat.auto_login(hotReload=True)
     while 1:
         Results = main()
         userMsg = "您好!\n您想搭乘" + Results.get("direction") + "的" + Results.get("line") + "公交车" + Results.get("msg")

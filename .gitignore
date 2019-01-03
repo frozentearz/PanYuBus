@@ -105,3 +105,4 @@ venv.bak/
 panyubus.log
 itchat.pkl
 QR.png
+./config/myconfig.conf

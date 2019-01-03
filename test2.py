@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
+import ConfigParser
 import threading
 import requests
 import random
@@ -37,15 +38,23 @@ def get_img():
             image["del_url"] = dict_json.get("data").get("delete")
     return {"img_url" : image.get("img_url"), "del_url": image.get("del_url")}
 
-
 def send_QR():
+    cf = ConfigParser.ConfigParser()
+    if os.path.exists("./config/myconfig.conf"):
+        cf.read("./config/myconfig.conf")
+    else:
+        cf.read("./config/config.conf")
+    opts = cf.options("mailgun")
+    api = cf.get("mailgun", "api")
+    print("api已取出：" + api)
+
     image = get_img()
+    
     print(image)
     html = "<h2>扫一扫登录微信</h2><img src='" + image.get("img_url") + "'>"
-
-    return requests.post(
+    requests.post(
         "https://api.mailgun.net/v3/mail.dgcontinent.com/messages",
-        auth=("api", "fd5f270993f10b93397fb82231337e09-6b60e603-b16f5772"),
+        auth=("api", api),
         data={"from": "Excited User <mailgun@mail.dgcontinent.com>",
               "to": ["frozen_tearz@163.com"],
               "subject": "Wechat 微信登录授权申请",
